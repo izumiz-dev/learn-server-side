@@ -1,0 +1,31 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:13
+    container_name: learn-docker-db
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  pgweb:
+    container_name: learn-docker-pgweb
+    restart: always
+    image: sosedoff/pgweb
+    ports:
+      - 8081:8081
+    environment:
+      - DATABASE_URL=${DATABASE_URL_DOCKER}
+    depends_on:
+      - postgres
+  express:
+    container_name: express
+    restart: always
+    ports:
+      - 8081:8081
+volumes:
+  postgres:
+
